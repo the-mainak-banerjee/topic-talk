@@ -1,8 +1,15 @@
+import { Routes, Route } from "react-router-dom";
+import { Home, Login } from "./pages";
 
 
 function App() {
   return (
-    <div>Topic talk</div>
+   <>
+      <Routes>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/' element={<Home/>}/>
+      </Routes>
+   </>
   );
 }
 
