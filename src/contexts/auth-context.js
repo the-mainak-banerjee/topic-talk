@@ -1,8 +1,10 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
     createUserWithEmailAndPassword, 
+    onAuthStateChanged, 
     signInWithEmailAndPassword,
-    signOut
+    signOut,
+    updateProfile
 } from 'firebase/auth'
 import { useToast } from '@chakra-ui/react'
 import { useUser } from "../hooks";
@@ -18,6 +20,7 @@ const AuthContextProider = ( { children }) => {
     const localTocken = localStorage.getItem('TTuserid')
 
     const [loading,setLoading] = useState(false)
+    const [user,setUser] = useState(null)
     const [userTocken,setUserTocken] = useState(localTocken)
     const { createUser } = useUser()
     const navigate = useNavigate()
@@ -40,7 +43,11 @@ const AuthContextProider = ( { children }) => {
         setLoading(true)
 
         try{
-            const userCredentials = await createUserWithEmailAndPassword(auth,email,password)
+            const userCredentials = await createUserWithEmailAndPassword(auth,email,password).catch((error) => 
+                console.log(error)
+            );
+
+            await updateProfile(auth.currentUser, {displayName: fullName})
             setUserTocken(userCredentials.user.accessToken)
             localStorage.setItem('TTuserid', userCredentials.user.accessToken)
             autoLogoutTimer = setTimeout(logOut,3600000)
@@ -107,9 +114,26 @@ const AuthContextProider = ( { children }) => {
     }
 
 
+    
+    // Get Currently Signedin User
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if(currentUser){
+                setUser(currentUser);
+            }else {
+                setUser('')
+            }
+        });
+        return () => {
+          unsubscribe();
+        };
+    },[]);
+
+
     return (
         <AuthContext.Provider
-            value = {{ loading, signUp, logIn, logOut, userTocken}}
+            value = {{ loading, signUp, logIn, logOut, user, userTocken}}
         >
             {children}
         </AuthContext.Provider>

@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme';
 import './theme/style.css'
 import { BrowserRouter } from 'react-router-dom';
-import { AuthContextProider } from './contexts';
+import { AuthContextProider, RoomContextProvider } from './contexts';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +14,9 @@ root.render(
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <AuthContextProider>
-          <App />
+          <RoomContextProvider>
+            <App />
+          </RoomContextProvider>
         </AuthContextProider>
       </ChakraProvider>
     </BrowserRouter>
