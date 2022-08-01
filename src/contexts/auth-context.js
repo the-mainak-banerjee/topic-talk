@@ -57,7 +57,7 @@ const AuthContextProider = ( { children }) => {
                 userId: userCredentials.user.uid,
                 name: fullName,
                 email: email,
-                rooms:[],
+                starredMsgs: [],
                 dateCreated: Date.now()
             })
 
@@ -68,11 +68,11 @@ const AuthContextProider = ( { children }) => {
                     status: 'error'
                 })
             }else{
-                // toast({
-                //     title: error.message,
-                //     status: 'error'
-                // })
-                console.log(error)
+                toast({
+                    title: error.message,
+                    status: 'error'
+                })
+                // console.log(error)
             }
         }finally{
             setLoading(false)

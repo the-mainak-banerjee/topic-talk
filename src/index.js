@@ -15,7 +15,7 @@ root.render(
       <ChakraProvider theme={theme}>
         <AuthContextProider>
           <RoomContextProvider>
-            <App />
+              <App />
           </RoomContextProvider>
         </AuthContextProider>
       </ChakraProvider>

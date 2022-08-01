@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react"
-import { collection, doc, onSnapshot, setDoc } from "firebase/firestore"
+import { collection, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { db } from "../services/firebase"
 import { v4 as uuid} from 'uuid'
@@ -10,11 +10,16 @@ const RoomContext = createContext()
 const RoomContextProvider = ({ children }) => {
 
     const [loading,setLoading] = useState(false)
+    const [updating,setUpdating] = useState(false)
     const [allRooms, setAllRooms] = useState([])
     const [userRooms, setUserRooms] = useState([])
     const [suggestedRooms,setSuggestedRooms] = useState([])
     const toast = useToast()
     const { user } = useAuth()
+
+    // console.log(allRooms)
+
+    // Create a new room
 
     const createRooms = async (data) => {
         setLoading(true)
@@ -29,6 +34,27 @@ const RoomContextProvider = ({ children }) => {
             console.log(error)
         }finally{
             setLoading(false)
+        }
+    }
+
+    // Update a room
+    const updateRoom = async (docRef,data) => {
+        setUpdating(true)
+        try{
+            await updateDoc(doc(db,'rooms', `${docRef}`), data)
+            toast({
+                title: 'You Have Successfully Joined the Room',
+                status: 'success',
+                position: 'bottom-left'
+            })
+        }catch(error){
+            toast({
+                title: 'Can not Join room. Pleasr try again later.',
+                status: 'error',
+                position: 'bottom-left'
+            })
+        }finally{
+            setUpdating(false)
         }
     }
 
@@ -56,7 +82,7 @@ const RoomContextProvider = ({ children }) => {
 
         const uRooms = allRooms.filter(room => {
             return (
-                room?.members?.some(item => item === user.uid)
+                room?.members?.some(item => item.id === user.uid)
             )
         })
         
@@ -64,16 +90,16 @@ const RoomContextProvider = ({ children }) => {
 
         const sRooms = allRooms.filter(room => {
             return (
-                room?.members?.some(item => item !== user.uid)
+                !room?.members?.some(item => item.id === user.uid)
             )
         })
-        setSuggestedRooms(sRooms)
-        
+        setSuggestedRooms(sRooms) 
     },[allRooms,user])
+
 
     return(
         <RoomContext.Provider 
-         value = {{createRooms, allRooms, userRooms, suggestedRooms, loading}}
+         value = {{createRooms,updateRoom, allRooms, userRooms, suggestedRooms, loading, updating}}
         >
             { children }
         </RoomContext.Provider>
