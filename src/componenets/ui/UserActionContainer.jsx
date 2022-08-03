@@ -22,6 +22,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
     },[room,user])
 
 
+
     // Room Joining Function
     const handleRoomJoining = () => {
         const colorsArray = ['orange.700','green.500','cyan.500','purple.600','pink.700']
@@ -37,6 +38,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
     }
 
 
+    
     // Function to create new message in database
     const handleMessageSubmit = () => {
         if(msgInput.msg === '') return
@@ -47,10 +49,9 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
             createdAt: serverTimestamp()
         }
         createMessage(msgInput.id,data)
+        updateRoom(room.id,{recentMessage: data})
         setMsgInput(prevData => ({...prevData, msg:''}))
-        // console.log(new Date())
     }
-
 
     // Handle Message Form Submit
     const submitHandler = (e) => {

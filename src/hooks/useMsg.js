@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 import { useToast } from "@chakra-ui/react"
 import { collection, doc, onSnapshot, orderBy, query, setDoc } from "firebase/firestore"
 import { db } from "../services/firebase"
+import formatDate from '../utils/FormatDate'
 
 export const useMsg = (roomDocId) => {
     const [allMsg, setAllMsg] = useState([])
     const toast = useToast()
+
+
 
     // Crete a new message
 
@@ -25,8 +28,9 @@ export const useMsg = (roomDocId) => {
     useEffect(() => {
         const unsub = onSnapshot(query(collection(db,`rooms/${roomDocId}/messages`),orderBy('createdAt', 'asc')) , (querySnapshot) => {
             const messages = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
                 id: doc.id,
-                ...doc.data()
+                createdAt: formatDate(doc.data().createdAt)
             }))
             setAllMsg(messages)
         })

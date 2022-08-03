@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Avatar, Box, Button, Container, Divider, Flex, IconButton, Input, Spacer, Text, useToast } from '@chakra-ui/react'
 import { AiFillPlusCircle, AiFillCloseCircle } from 'react-icons/ai'
 import { useAuth, useRoom } from '../../contexts' 
+import { serverTimestamp } from 'firebase/firestore'
 
 
 export const LeftBar = ({ setShowRightBar }) => {
@@ -24,8 +25,9 @@ export const LeftBar = ({ setShowRightBar }) => {
             members:[{name:user.displayName, id:user.uid, color:'blue'}],
             admins: [],
             owner: {name: user.displayName, id:user.uid},
-            createdAt: new Date(),
-            isAdminOnly: false
+            createdAt: serverTimestamp(),
+            isAdminOnly: false,
+            recentMessage: ''
         })
         setShowForm(false)
         setRoomName('')
@@ -36,14 +38,20 @@ export const LeftBar = ({ setShowRightBar }) => {
 
     }
 
+    
 
     // handle View Room
-
     const viewRoom = (room) => {
         navigate('/', {state: room})
         setShowRightBar('')
     }
 
+
+    // Truncate String
+
+    const truncateString = (str) => {
+        return str.length > 27 ? str.slice(0,27) + '...' : str
+    }
 
     return (
         <Box width='30%' height='full' backgroundColor='white' position='relative' borderRight='1px' borderStyle='solid' borderColor='blackAlpha.400'>
@@ -89,10 +97,10 @@ export const LeftBar = ({ setShowRightBar }) => {
                                         <Avatar name={room.name} size='sm'/>
                                         <Box w='100%'>
                                             <Flex gap='28' alignItems='center' justifyContent='space-between'>
-                                                <Text fontSize='sm'>{room.name}</Text>
-                                                {/* <Text fontSize='xs'>{room.createdAt?.toLocaleDateString()}</Text> */}
+                                                <Text fontSize='sm' fontWeight='medium'>{room.name}</Text>
+                                                <Text fontSize='xs'>{room?.createdAt?.formatedMsgDate?.slice(4)}</Text>
                                             </Flex>
-                                            <Text fontSize='xs' pb='2'>Owner: {room.owner.name}</Text>
+                                            <Text fontSize='xs' pb='2' color='gray'>Owner: {room.owner.name}</Text>
                                             <Divider/>
                                         </Box>
                                     </Flex>
@@ -110,10 +118,24 @@ export const LeftBar = ({ setShowRightBar }) => {
                                         <Avatar name={room.name} size='sm'/>
                                         <Box w='full'>
                                             <Flex  alignItems='center' justifyContent='space-between'>
-                                                <Text fontSize='sm'>{room.name}</Text>
-                                                <Text fontSize='xs'>31/07/2022</Text>
+                                                <Text fontSize='sm' fontWeight='medium'>{room.name}</Text>
+                                                {!room.recentMessage?.content
+                                                ? (
+                                                    <Text fontSize='xs'  color='gray'>{room?.createdAt?.formatedMsgDate?.slice(4)}</Text>    
+                                                ) : (
+                                                    <>
+                                                        {!isNaN(room.recentMessage?.createdAt?.formatedMsgHour) && <Text fontSize='xs'  color='gray'>{room.recentMessage?.createdAt?.formatedMsgDate?.slice(4)}</Text>}
+                                                    </>
+                                                )
+                                                }
                                             </Flex>
-                                            <Text fontSize='xs' pb='2'>Last Message Goes Here</Text>
+                                            {!room.recentMessage?.content
+                                            ? (
+                                                <Text fontSize='xs' pb='2'  color='gray'>Owner: {room.owner.name}</Text>
+                                            ) : (
+                                                <Text fontSize='xs' pb='2'  color='gray'>{truncateString(room?.recentMessage?.sender?.id === user?.uid ?`Me: ${room?.recentMessage?.content}` :`${room?.recentMessage?.sender?.name}: ${room?.recentMessage?.content}`)}</Text>
+                                            )
+                                            }
                                             <Divider/>
                                         </Box>
                                     </Flex>

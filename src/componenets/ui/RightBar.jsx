@@ -117,7 +117,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
                     />
                     <Input type='text' ref={inputRef} autoFocus placeholder={`Search Message In ${room?.name}`} value={searchText} onChange={handleSearchTextChange} variant='filled'/>
                     {searchText && <InputRightElement>
-                        <AiFillCloseCircle onClick={handleSearchTextClear}/>
+                        <AiFillCloseCircle onClick={handleSearchTextClear} cursor='pointer'/>
                     </InputRightElement>}
                 </InputGroup>
             </Box>
@@ -128,7 +128,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
                             <Flex key={msg?.id} flexDirection='column' py='2' px='4' mb='4' backgroundColor='#f8f8f8' borderRadius='lg' boxShadow='md' cursor='pointer' onClick={() => setSelectedMessege(msg?.id)}>
                                 <Text fontWeight='medium'>{user?.uid === msg?.sender?.id ? 'Me' : msg?.sender?.name}</Text>
                                 <Text>{msg?.content}</Text>
-                                <Text fontSize='xs' alignSelf='flex-end'>02:08</Text>
+                                <Text fontSize='xs' alignSelf='flex-end'>{msg?.createdAt?.formatedMsgDate?.slice(4)} {msg?.createdAt?.formatedMsgHour}:{msg?.createdAt?.formatedMsgMins}</Text>
                             </Flex>
                         )
                     })
