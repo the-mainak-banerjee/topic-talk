@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react"
-import { collection, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore"
+import { collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { db } from "../services/firebase"
 import { v4 as uuid} from 'uuid'
@@ -14,6 +14,7 @@ const RoomContextProvider = ({ children }) => {
     const [allRooms, setAllRooms] = useState([])
     const [userRooms, setUserRooms] = useState([])
     const [suggestedRooms,setSuggestedRooms] = useState([])
+    const [selectedMessege,setSelectedMessege] = useState(null)
     const toast = useToast()
     const { user } = useAuth()
 
@@ -38,18 +39,18 @@ const RoomContextProvider = ({ children }) => {
     }
 
     // Update a room
-    const updateRoom = async (docRef,data) => {
+    const updateRoom = async (docRef,data,msg) => {
         setUpdating(true)
         try{
             await updateDoc(doc(db,'rooms', `${docRef}`), data)
             toast({
-                title: 'You Have Successfully Joined the Room',
+                title: msg,
                 status: 'success',
                 position: 'bottom-left'
             })
         }catch(error){
             toast({
-                title: 'Can not Join room. Pleasr try again later.',
+                title: 'An error occurred. Pleasr try again later.',
                 status: 'error',
                 position: 'bottom-left'
             })
@@ -57,6 +58,26 @@ const RoomContextProvider = ({ children }) => {
             setUpdating(false)
         }
     }
+
+
+    // Delete A Room
+    const deleteRoom = async (docRef) => {
+        try{
+            await deleteDoc(doc(db,'rooms',`${docRef}`))
+            toast({
+                title: 'Room deleted successfully',
+                status: 'success',
+                position: 'bottom-left'
+            })
+        }catch(error){
+            toast({
+                title: 'An error occurred. Pleasr try again later.',
+                status: 'error',
+                position: 'bottom-left'
+            })
+        }
+    }
+
 
 
     //  Get all rooms data
@@ -99,7 +120,7 @@ const RoomContextProvider = ({ children }) => {
 
     return(
         <RoomContext.Provider 
-         value = {{createRooms,updateRoom, allRooms, userRooms, suggestedRooms, loading, updating}}
+         value = {{createRooms,updateRoom, deleteRoom, allRooms, userRooms, suggestedRooms, loading, updating, selectedMessege,setSelectedMessege}}
         >
             { children }
         </RoomContext.Provider>

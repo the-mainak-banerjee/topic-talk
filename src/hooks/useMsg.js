@@ -36,7 +36,7 @@ export const useMsg = (roomDocId) => {
 
     return {
         allMsg,
-        createMessage
+        createMessage,
     }
 }
 

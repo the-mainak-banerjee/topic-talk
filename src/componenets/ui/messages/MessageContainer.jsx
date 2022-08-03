@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react'
 import React, { useLayoutEffect, useRef } from 'react'
-import { useAuth } from '../../../contexts'
+import { useAuth, useRoom } from '../../../contexts'
 import { useMsg } from '../../../hooks'
 import MessageItem from './MessageItem'
 
@@ -8,6 +8,7 @@ export const MessageContainer = ({ room }) => {
 
   const { allMsg } = useMsg(room?.id)
   const { user } = useAuth()
+  const { selectedMessege } = useRoom()
   const msgContainerRef = useRef()
 
   useLayoutEffect(() => {
@@ -28,6 +29,7 @@ export const MessageContainer = ({ room }) => {
                     msg={item}
                     senderDetails={room?.members?.find(data => data.id === item.sender.id)}
                     isUserMsg = {item.sender.id === user?.uid}
+                    selectedMessege = {selectedMessege}
                   />
                 )
               })}

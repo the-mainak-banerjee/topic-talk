@@ -11,8 +11,8 @@ export const NavBar = () => {
     }
 
   return (
-    <Box as='nav' backgroundColor='#00A884' pt='4' pb='8' px='36' color='white'>
-        <Flex>
+    <Box as='nav' backgroundColor='#00A884' pt='4' pb='8' color='white'>
+        <Flex width='80%' mx='auto'>
             <Heading as='h2' size='xl'>Topic-Talk</Heading>
             <Spacer/>
             <Button onClick={logOutHandler} backgroundColor='white' color='black' fontWeight='medium' size='lg'>Logout</Button>

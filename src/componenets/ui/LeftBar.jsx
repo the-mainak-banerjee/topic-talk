@@ -5,7 +5,7 @@ import { AiFillPlusCircle, AiFillCloseCircle } from 'react-icons/ai'
 import { useAuth, useRoom } from '../../contexts' 
 
 
-export const LeftBar = () => {
+export const LeftBar = ({ setShowRightBar }) => {
 
     const [showForm,setShowForm] = useState(false)
     const [roomName,setRoomName] = useState('')
@@ -41,6 +41,7 @@ export const LeftBar = () => {
 
     const viewRoom = (room) => {
         navigate('/', {state: room})
+        setShowRightBar('')
     }
 
 
@@ -50,7 +51,7 @@ export const LeftBar = () => {
                 <Flex alignItems='center'>
                     <Text>{user?.displayName}</Text>
                     <Spacer/>
-                    <IconButton icon={showForm ? <AiFillCloseCircle/> : <AiFillPlusCircle/>} size='sm' colorScheme={showForm ? 'red' : 'green'} onClick={() => setShowForm(prevState => !prevState)}/>
+                    <IconButton icon={showForm ? <AiFillCloseCircle/> : <AiFillPlusCircle/>} size='sm' colorScheme={showForm ? 'red' : 'green'} variant='outline' onClick={() => setShowForm(prevState => !prevState)}/>
                 </Flex>
             </Container>
 
@@ -70,6 +71,13 @@ export const LeftBar = () => {
                             loadingText='Craeting Room'
                         >
                             Create Room
+                        </Button>
+                        <Button 
+                            colorScheme='red' 
+                            fontWeight='normal' 
+                            onClick={() => setShowForm(false)}
+                        >
+                            Cancel
                         </Button>
                     </Flex>
                 ) : (
@@ -94,8 +102,8 @@ export const LeftBar = () => {
                         
                         <Divider mt='4'/>
 
-                        <Text my='3' fontSize='lg' color='#00A884' fontWeight='medium'>Your Rooms</Text>
-                        {userRooms?.length === 0 && <Text>Please Join Into A Room</Text>}
+                        {userRooms?.length > 0 && <Text my='3' fontSize='lg' color='#00A884' fontWeight='medium'>Your Rooms</Text>}
+                        {/* {userRooms?.length === 0 && <Text>Please Join Into A Room</Text>} */}
                         {userRooms?.map(room => {
                                 return (
                                     <Flex key={room?.id} gap='2' p='2' mb='2' cursor='pointer' onClick={() => viewRoom(room)} backgroundColor={room?.id === activeRoom?.id ? 'gray.200' : '' }>

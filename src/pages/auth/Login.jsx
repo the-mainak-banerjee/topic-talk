@@ -79,11 +79,11 @@ export const Login = () => {
                     children={<CMdEmail color="gray.300" />}
                   />
                   <Input 
-                  type="email" 
-                  placeholder="email address" 
-                  isInvalid={!isValidEmail && formData.email}
-                  errorBorderColor='red.300'
-                  onChange={(e) => setFormData(prevState =>({...prevState, email:e.target.value}))}/>
+                    type="email" 
+                    placeholder="email address" 
+                    isInvalid={!isValidEmail && formData.email}
+                    errorBorderColor='red.300'
+                    onChange={(e) => setFormData(prevState =>({...prevState, email:e.target.value}))}/>
                 </InputGroup>
                 <FormHelperText>
                   {formData.email && !isValidEmail && <Text color='red.500'>Email is Invalid</Text>}
