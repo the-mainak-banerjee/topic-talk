@@ -11,12 +11,23 @@ export const AuthenticatedUi = () => {
 
   const { showRightBar, setShowRightBar } = useAuth()
   const [room,setRoom] = useState([])
-  const { allRooms } = useRoom()
+  const { allRooms, setSelectedMessege } = useRoom()
   const location = useLocation()
+
+  // console.log(location?.state)
+
 
   useEffect(() => {
     setRoom(allRooms.find(item => item.id === location?.state?.id))
   }, [allRooms,location])
+
+  useEffect(() => {
+    if(showRightBar === ''){
+      setSelectedMessege(null)
+    }
+    // eslint-disable-next-line
+  }, [showRightBar])
+
 
   return (
     <>

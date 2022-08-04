@@ -1,10 +1,12 @@
-import { Avatar, Badge, Box, Button, Container, Flex, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spacer, Text, Textarea } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Button, Container, Flex, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spacer, Text, Textarea, useToast } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { GrClose } from 'react-icons/gr'
+import { FiUserPlus } from 'react-icons/fi'
 import { BsPencil, BsSearch } from 'react-icons/bs'
 import { useAuth, useRoom } from '../../contexts'
 import { useMsg } from '../../hooks'
+import inviteHandler from '../../utils/InviteHandler'
 
 export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
 
@@ -17,13 +19,14 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
     const { allMsg } = useMsg(room?.id)
     const { user } = useAuth()
     const { updateRoom, setSelectedMessege, deleteRoom } = useRoom()
+    const toast = useToast()
 
     const isAdmin = room?.admins?.some(item => item.id === user?.uid)
     const isOwner = room?.owner?.id === user?.uid
     const isMemeber = room?.members?.some(item => item.id === user?.uid) 
 
 
-
+ 
 
     // Get the searched message array
     const getFilteredMsg = useCallback((text) => {
@@ -67,6 +70,30 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
         setEditDescription(false)
     }
 
+    
+    // Handle Invite Friends
+    const handleInviteFriends = async () => {
+        // const shareUrl = `https://${window.location.host}/room/${room?.id}`
+        // const shareUrl = `${window.location.host}/room/${room?.id}`
+
+        // try {
+        //     await navigator.clipboard.writeText(shareUrl)
+        //     toast({
+        //         title: 'Link Copied To Clipboard, Now Share With friends',
+        //         status: 'success',
+        //         position: 'bottom-left'
+        //     })
+        // }catch(error){
+        //     toast({
+        //         title: 'Something Went Wrong, Please Try again',
+        //         status: 'error',
+        //         position: 'bottom-left'
+        //     })
+        // }
+
+        inviteHandler(room?.id,toast)
+    }
+
 
     // Handle Room Danger Actions
 
@@ -102,7 +129,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
   return (
     <Box width={showRightBar ? '35%' : '0'} height='full' backgroundColor='#f8f8f8'>
         <Flex p='2' backgroundColor='#f8f8f8' width='100%' height='8%' alignItems='center' gap='4'>
-            <GrClose cursor='pointer' onClick={() => setShowRightBar('')}/>
+            <GrClose cursor='pointer' onClick={() =>  setShowRightBar('')}/>
             {showRightBar === 'search' && <Text fontSize='sm' fontWeight='normal'>Search Messages</Text>}
             {showRightBar === 'details' && <Text fontSize='sm' fontWeight='normal'>Room Info</Text>}
         </Flex>
@@ -163,6 +190,13 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
                 )
                 }
             </Box>
+
+            {isMemeber && <Box backgroundColor='white' p='4' mb='2'>
+                <Flex onClick={handleInviteFriends} gap='4' cursor='pointer' alignItems='center'>
+                    <FiUserPlus/>
+                    <Text>Invite Friends</Text>
+                </Flex>
+            </Box>}
             
 
 

@@ -17,6 +17,7 @@ const RoomContextProvider = ({ children }) => {
     const [userRooms, setUserRooms] = useState([])
     const [suggestedRooms,setSuggestedRooms] = useState([])
     const [selectedMessege,setSelectedMessege] = useState(null)
+    const [editedMessage,setEditedMessage] = useState(null)
     const toast = useToast()
     const { user } = useAuth()
  
@@ -32,7 +33,8 @@ const RoomContextProvider = ({ children }) => {
         }catch(error){
             toast({
                 title: 'Can not create room. Pleasr try again later.',
-                status: 'error'
+                status: 'error',
+                position: 'bottom-left'
             })
             console.log(error)
         }finally{
@@ -60,7 +62,7 @@ const RoomContextProvider = ({ children }) => {
                     position: 'bottom-left'
                 })
             }else{
-                console.log(msg)
+                console.log(error)
             }
         }finally{
             setUpdating(false)
@@ -131,7 +133,7 @@ const RoomContextProvider = ({ children }) => {
 
     return(
         <RoomContext.Provider 
-         value = {{createRooms,updateRoom, deleteRoom, allRooms, userRooms, suggestedRooms, loading, updating, selectedMessege,setSelectedMessege}}
+         value = {{createRooms,updateRoom, deleteRoom, allRooms, userRooms, suggestedRooms, loading, updating, selectedMessege,setSelectedMessege,editedMessage,setEditedMessage}}
         >
             { children }
         </RoomContext.Provider>

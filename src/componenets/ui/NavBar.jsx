@@ -1,10 +1,17 @@
-import { Box, Button, Flex, Heading, Spacer } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Spacer, useToast } from '@chakra-ui/react'
 import React from 'react'
 import { useAuth } from '../../contexts'
+import inviteHandler from '../../utils/InviteHandler'
 
 export const NavBar = () => {
 
-    const { logOut } = useAuth()
+    const { logOut, userTocken } = useAuth()
+    const toast = useToast()
+
+
+    const inviteFriends = () => {
+      inviteHandler(process.env.REACT_APP_TOPIC_TALK_OFFICIAL,toast)
+    }
 
     const logOutHandler = () => {
         logOut()
@@ -15,7 +22,8 @@ export const NavBar = () => {
         <Flex width='80%' mx='auto'>
             <Heading as='h2' size='xl'>Topic-Talk</Heading>
             <Spacer/>
-            <Button onClick={logOutHandler} backgroundColor='white' color='black' fontWeight='medium' size='lg'>Logout</Button>
+            <Button onClick={inviteFriends} variant='outline' fontWeight='medium' mr='4' color='black'>Invite Friends</Button>
+            {userTocken && <Button onClick={logOutHandler} backgroundColor='white' color='black' fontWeight='medium'>Logout</Button>}
         </Flex>
     </Box>
   )

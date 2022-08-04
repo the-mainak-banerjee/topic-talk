@@ -10,6 +10,7 @@ import { useToast } from '@chakra-ui/react'
 import { useUser } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
+import { serverTimestamp } from "firebase/firestore";
 
 let autoLogoutTimer;
 
@@ -21,6 +22,7 @@ const AuthContextProider = ( { children }) => {
 
     const [loading,setLoading] = useState(false)
     const [user,setUser] = useState(null)
+    // const [userData, setUserData] = useState()
     const [userTocken,setUserTocken] = useState(localTocken)
     const [showRightBar,setShowRightBar] = useState('')
     const { createUser } = useUser()
@@ -32,7 +34,7 @@ const AuthContextProider = ( { children }) => {
         await signOut(auth)
         setUserTocken(null)
         localStorage.removeItem('TTuserid')
-        navigate('/login', { replace: true})  
+        navigate('/', { replace: true})  
         if(autoLogoutTimer){
             clearTimeout(autoLogoutTimer)
         }
@@ -59,7 +61,7 @@ const AuthContextProider = ( { children }) => {
                 name: fullName,
                 email: email,
                 starredMsgs: [],
-                dateCreated: Date.now()
+                dateCreated: serverTimestamp()
             })
 
         }catch(error){
@@ -86,7 +88,6 @@ const AuthContextProider = ( { children }) => {
 
         try{
             const userCredentials = await signInWithEmailAndPassword(auth,email,password)
-            navigate('/', {replace: true})
             setLoading(false)
             setUserTocken(userCredentials.user.accessToken)
             localStorage.setItem('TTuserid', JSON.stringify(userCredentials.user.accessToken))
@@ -130,6 +131,8 @@ const AuthContextProider = ( { children }) => {
           unsubscribe();
         };
     },[]);
+
+   
 
 
     return (

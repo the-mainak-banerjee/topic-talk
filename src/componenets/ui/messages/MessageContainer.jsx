@@ -8,8 +8,9 @@ export const MessageContainer = ({ room }) => {
 
   const { allMsg } = useMsg(room?.id)
   const { user } = useAuth()
-  const { selectedMessege } = useRoom()
+  const { selectedMessege, editedMessage } = useRoom()
   const msgContainerRef = useRef()
+
 
   useLayoutEffect(() => {
     if (msgContainerRef.current) {
@@ -18,7 +19,7 @@ export const MessageContainer = ({ room }) => {
 });
 
   return (
-    <Box p='2' backgroundColor='gray.300' width='100%' height='84%' overflowY='scroll' ref={msgContainerRef}>
+    <Box p='2' backgroundColor='gray.300' width='100%' height={editedMessage ? '74%' : '84%'} overflowY='scroll' ref={msgContainerRef}>
       {allMsg?.length > 0 
       ? (
             <>
@@ -30,6 +31,8 @@ export const MessageContainer = ({ room }) => {
                     senderDetails={room?.members?.find(data => data.id === item.sender.id)}
                     isUserMsg = {item.sender.id === user?.uid}
                     selectedMessege = {selectedMessege}
+                    user = {user}
+                    room = {room}
                   />
                 )
               })}

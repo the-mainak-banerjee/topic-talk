@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Flex, IconButton, Button, Textarea, Text } from '@chakra-ui/react'
-import { BsEmojiSmile } from 'react-icons/bs'
-import { AiOutlineSend } from 'react-icons/ai'
+import { Box, Flex, IconButton, Button, Textarea, Text, Spacer } from '@chakra-ui/react'
+import { BsEmojiSmile, BsPencil } from 'react-icons/bs'
+import { AiOutlineCheckCircle, AiOutlineSend } from 'react-icons/ai'
 import { useAuth, useRoom } from '../../contexts'
 import { v4 as uuid} from 'uuid'
 import { useMsg } from '../../hooks'
 import { serverTimestamp } from 'firebase/firestore'
+import { GrClose } from 'react-icons/gr'
 
 export const UserActionContainer = ({ room, setShowRightBar }) => {
 
     const { user } = useAuth()
-    const { updateRoom, updating } = useRoom()
-    const { createMessage } = useMsg(room?.id)
+    const { updateRoom, updating, editedMessage, setEditedMessage } = useRoom()
+    const { createMessage, updateMsg} = useMsg(room?.id)
     const [isMember,setIsMember] = useState(false)
     const [msgInput, setMsgInput] = useState({id:'', msg:''})
+
 
     const isOwner = room?.owner?.id === user?.uid
 
@@ -46,24 +48,44 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
         const data = {
             content: msgInput.msg.trim(),
             sender: {name:user?.displayName, id:user?.uid},
+            room: room,
             createdAt: serverTimestamp()
         }
         createMessage(msgInput.id,data)
         updateRoom(room.id,{recentMessage: data})
-        setMsgInput(prevData => ({...prevData, msg:''}))
+        setMsgInput(prevData => ({...prevData, msg:''}))   
+    }
+
+    // Function to update a message of a room
+    const updateMessageHandler = () => {
+
+        const data = {
+            content: editedMessage.msg.trim()
+        }
+        updateMsg(editedMessage?.id,data)
+        setEditedMessage(null)
     }
 
     // Handle Message Form Submit
     const submitHandler = (e) => {
         e.preventDefault()
-        handleMessageSubmit()
+        if(editedMessage?.msg){
+            updateMessageHandler()
+        }else{
+            handleMessageSubmit()
+        }
+
     }
 
     // Prevent new line creation by enter key
     const handleKeyPress = (e) => {
         if(e.keyCode === 13 && !e.shiftKey){
             e.preventDefault()
-            handleMessageSubmit()
+            if(editedMessage?.msg){
+                updateMessageHandler()
+            }else{
+                handleMessageSubmit()
+            }
         }
     }
 
@@ -78,20 +100,47 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
             ? (
                 <Text textAlign='center'>Only Owner Can Send Message</Text>
             ) : (
-                <form onSubmit={submitHandler}>
-                    <Flex h='fit-content' gap='2'>
-                        <IconButton type='button' icon={<BsEmojiSmile/>}/>
-                        <Textarea 
-                            placeholder='type your message' 
-                            rows='1' 
-                            backgroundColor='white'
-                            value={msgInput.msg}
-                            onKeyDown={handleKeyPress}
-                            onChange={(e) => setMsgInput(prevData => ({id:uuid(), msg: e.target.value}))} 
-                        />
-                        <IconButton type='submit' icon={<AiOutlineSend/>} disabled={!msgInput.msg}/>
-                    </Flex> 
-                </form>
+                <>
+                    {editedMessage && <Flex p='2' gap='2'>
+                        <BsPencil/>
+                        <Box>
+                            <Text fontSize='xs' color='#00A884'>Edit Message</Text>
+                            <Text>{editedMessage.msg}</Text>
+                        </Box>
+                        <Spacer/>
+                        <GrClose cursor='pointer' onClick={() => setEditedMessage(null)}/>
+                    </Flex>}
+                    <form onSubmit={submitHandler}>
+                        <Flex h='fit-content' gap='2'>
+                            <IconButton type='button' icon={<BsEmojiSmile/>}/>
+                            {editedMessage?.msg 
+                            ? (
+                                <Textarea 
+                                placeholder='type your message' 
+                                rows='1' 
+                                backgroundColor='white'
+                                value={editedMessage.msg}
+                                onKeyDown={handleKeyPress}
+                                autoFocus={true}
+                                onChange={(e) => setEditedMessage(prevData => ({...prevData, msg: e.target.value}))} 
+                            />
+
+                            ) : (
+                                <Textarea 
+                                placeholder='type your message' 
+                                rows='1' 
+                                backgroundColor='white'
+                                value={msgInput.msg}
+                                onKeyDown={handleKeyPress}
+                                onChange={(e) => setMsgInput(prevData => ({id:uuid(), msg: e.target.value}))} 
+                            />
+
+                            )
+                            }
+                            <IconButton type='submit' backgroundColor='#00A884' color='white' icon={editedMessage ? <AiOutlineCheckCircle/> : <AiOutlineSend/>} disabled={!msgInput.msg && !editedMessage?.msg}/>
+                        </Flex> 
+                    </form>
+                </>
             )
             }
             </>

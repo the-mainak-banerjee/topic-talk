@@ -15,7 +15,7 @@ export const MiddleBarHeader = ({ room, setShowRightBar }) => {
                 <Avatar name={room?.name} size='sm'/>
                 <Box w='100%'>
                     <Text fontSize='sm'>{room?.name}</Text>
-                    <Text fontSize='xs' pb='2'>Owner: {room?.owner?.name === user?.displayName ? 'Me' : room?.owner?.name}</Text>
+                    <Text fontSize='xs' pb='2' color='#00A884'>Owner: {room?.owner?.id === user?.uid ? 'Me' : room?.owner?.name}</Text>
                 </Box>
             </Flex>
             <Spacer/>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Flex,
-  Heading,
   Input,
   Button,
   InputGroup,
@@ -9,21 +8,19 @@ import {
   InputLeftElement,
   chakra,
   Box,
-  Link,
   FormControl,
   InputRightElement,
   Text,
   FormHelperText
 } from "@chakra-ui/react";
-import { Link as ReachLink } from "react-router-dom"
 import { FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { useAuth } from "../../contexts";
+import { useAuth } from "../../../contexts";
 
 const CFaLock = chakra(FaLock);
 const CMdEmail = chakra(MdEmail)
 
-export const Login = () => {
+export const Login = ({ setShowLogin, onToggle }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData,setFormData] = useState({
@@ -48,11 +45,15 @@ export const Login = () => {
 
   const handleShowClick = () => setShowPassword(!showPassword);
 
+  const handleShowSignUp = () => {
+    setShowLogin(false)
+    onToggle()
+  }
+
 
   return (
     <Flex
       flexDirection="column"
-      height="100vh"
       justifyContent="center"
       alignItems="center"
     >
@@ -62,8 +63,6 @@ export const Login = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Heading>Topic-Talk</Heading>
-        <Text fontSize='lg' textAlign='center' px='4' w='70%'>Get Back To Your Account And Continue Chatting With Others</Text>
         <Box minW={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
@@ -116,9 +115,9 @@ export const Login = () => {
               <Button
                 borderRadius={0}
                 variant="solid"
-                colorScheme="blue"
+                colorScheme="green"
                 width="full"
-                disabled={!isValidPassword || !isValidEmail}
+                disabled={!isValidPassword || !isValidEmail || loading}
                 isLoading={loading}
                 loadingText='Logging In...'
                 onClick={handleLogin}
@@ -129,12 +128,15 @@ export const Login = () => {
           </form>
         </Box>
       </Stack>
-      <Box>
-        New to us?{" "}
-        <Link as={ReachLink} to='/' color='blue.500' href="#">
+      <Flex gap='2'>
+        <Text> New to us? </Text>
+        <Text onClick={handleShowSignUp}  color='#00A884' cursor='pointer'>
           Sign Up
-        </Link>
-      </Box>
+        </Text>
+        {/* <Link as={ReachLink} to='/' color='blue.500' href="#">
+          Sign Up
+        </Link> */}
+      </Flex>
     </Flex>
   );
 };
