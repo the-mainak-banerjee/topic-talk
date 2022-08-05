@@ -14,8 +14,6 @@ export const AuthenticatedUi = () => {
   const { allRooms, setSelectedMessege } = useRoom()
   const location = useLocation()
 
-  console.log(location?.state)
-
 
   useEffect(() => {
     setRoom(allRooms.find(item => item.id === location?.state?.id))
