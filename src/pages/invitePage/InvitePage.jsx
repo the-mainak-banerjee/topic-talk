@@ -11,8 +11,9 @@ const InvitePage = () => {
     const navigate = useNavigate()
     const { allRooms } = useRoom()
 
+
     useEffect(() => {
-        setInvitedRoom(allRooms.find(item => item.id === params.id))
+        setInvitedRoom(allRooms.find(item => item.id === params.id))    
     }, [allRooms, params])
 
 
@@ -24,6 +25,7 @@ const InvitePage = () => {
     <>
         <NavBar/>
         <Flex width='80vw' height='85vh' mx='auto' my='-4' backgroundColor='#F8F8F8' boxShadow='md' flexDirection='column' gap='2' alignItems='center' pt='20'>
+
 
             {invitedRoom 
                 ? (

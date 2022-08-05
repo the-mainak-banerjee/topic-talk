@@ -14,7 +14,7 @@ export const AuthenticatedUi = () => {
   const { allRooms, setSelectedMessege } = useRoom()
   const location = useLocation()
 
-  // console.log(location?.state)
+  console.log(location?.state)
 
 
   useEffect(() => {
