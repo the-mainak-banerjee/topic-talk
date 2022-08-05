@@ -33,7 +33,8 @@ export const LeftBarRooms = ({ setShowRightBar, setShowProfile }) => {
         setRoomName('')
         toast({
             title: 'Room Created Successfully',
-            status: 'success'
+            status: 'success',
+            position: 'bottom-left'
         })
 
     }
@@ -66,7 +67,20 @@ export const LeftBarRooms = ({ setShowRightBar, setShowProfile }) => {
 
             <Divider/>
 
-            <Container p='2' overflowY='scroll' height='92%'>
+            <Container 
+                p='2' 
+                overflowY='scroll' 
+                height='92%'
+                sx={{
+                    '&:: -webkit-scrollbar' : {
+                        width: '4px',
+                        backgroundColor:'#f8f8f8'
+                    },
+                    '&::-webkit-scrollbar-thumb' : {
+                        backgroundColor:'#00C884'
+                    }
+                }}
+            >
                 {showForm 
                 ? (
                     <Flex flexDirection='column' gap='4'>

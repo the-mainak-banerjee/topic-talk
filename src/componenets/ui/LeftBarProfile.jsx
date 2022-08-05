@@ -43,7 +43,21 @@ export const LeftBarProfile = ({ setShowProfile }) => {
             </Flex>
         </Container>
 
-        <Container backgroundColor='#f8f8f8' height='88%' p='0' overflowY='scroll'>
+        <Container 
+            backgroundColor='#f8f8f8' 
+            height='88%' 
+            p='0' 
+            overflowY='scroll'
+            sx={{
+                '&:: -webkit-scrollbar' : {
+                    width: '4px',
+                    backgroundColor:'#f8f8f8'
+                },
+                '&::-webkit-scrollbar-thumb' : {
+                    backgroundColor:'#00C884'
+                }
+            }}
+        >
             <Box backgroundColor='white' pt='2' px='2' pb='4'>
                 <Text fontSize='xs' color='#00A884'>Your Name</Text>
                 {showForm 

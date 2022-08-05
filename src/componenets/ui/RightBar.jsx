@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Button, Container, Flex, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spacer, Text, Textarea, useToast } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Button, Container, Flex, IconButton, Image, Input, InputGroup, InputLeftElement, InputRightElement, Spacer, Text, Textarea, useToast } from '@chakra-ui/react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai'
 import { GrClose } from 'react-icons/gr'
@@ -72,25 +72,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
 
     
     // Handle Invite Friends
-    const handleInviteFriends = async () => {
-        // const shareUrl = `https://${window.location.host}/room/${room?.id}`
-        // const shareUrl = `${window.location.host}/room/${room?.id}`
-
-        // try {
-        //     await navigator.clipboard.writeText(shareUrl)
-        //     toast({
-        //         title: 'Link Copied To Clipboard, Now Share With friends',
-        //         status: 'success',
-        //         position: 'bottom-left'
-        //     })
-        // }catch(error){
-        //     toast({
-        //         title: 'Something Went Wrong, Please Try again',
-        //         status: 'error',
-        //         position: 'bottom-left'
-        //     })
-        // }
-
+    const handleInviteFriends = () => {
         inviteHandler(room?.id,toast)
     }
 
@@ -127,7 +109,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
 
 
   return (
-    <Box width={showRightBar ? '35%' : '0'} height='full' backgroundColor='#f8f8f8'>
+    <Box width={showRightBar ? '30%' : '0'} height='full' backgroundColor='#f8f8f8'>
         <Flex p='2' backgroundColor='#f8f8f8' width='100%' height='8%' alignItems='center' gap='4'>
             <GrClose cursor='pointer' onClick={() =>  setShowRightBar('')}/>
             {showRightBar === 'search' && <Text fontSize='sm' fontWeight='normal'>Search Messages</Text>}
@@ -149,22 +131,83 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
                 </InputGroup>
             </Box>
 
-            <Container py='2' px='4'  height='82%' backgroundColor='white' overflowY='scroll'>
-                {searchedMsg?.map(msg => {
-                        return (
-                            <Flex key={msg?.id} flexDirection='column' py='2' px='4' mb='4' backgroundColor='#f8f8f8' borderRadius='lg' boxShadow='md' cursor='pointer' onClick={() => setSelectedMessege(msg?.id)}>
-                                <Text fontWeight='medium'>{user?.uid === msg?.sender?.id ? 'Me' : msg?.sender?.name}</Text>
-                                <Text>{msg?.content}</Text>
-                                <Text fontSize='xs' alignSelf='flex-end'>{msg?.createdAt?.formatedMsgDate?.slice(4)} {msg?.createdAt?.formatedMsgHour}:{msg?.createdAt?.formatedMsgMins}</Text>
-                            </Flex>
-                        )
-                    })
+            <Container 
+                py='2' 
+                px='4'  
+                height='82%' 
+                backgroundColor='white' 
+                overflowY='scroll'
+                sx={{
+                    '&:: -webkit-scrollbar' : {
+                        width: '4px',
+                        backgroundColor:'#f8f8f8'
+                    },
+                    '&::-webkit-scrollbar-thumb' : {
+                        backgroundColor:'#00C884'
+                    }
+                }}
+            >
+                {searchText === '' && <Flex alignItems='center' justifyContent='center'>
+                    <Image
+                       src='../../../assets/search.png'
+                       boxSize='200px'
+                       objectFit='cover'
+                       mt='20'
+                   />
+                </Flex>
                 }
+
+                {searchText !== '' && <>
+                    {searchedMsg?.length === 0
+                        ?(
+                            <Flex flexDirection='column' alignItems='center' justifyContent='center' gap='2'>
+                                <Image
+                                    src='../../../assets/noresult.png'
+                                    boxSize='200px'
+                                    objectFit='cover'
+                                    mt='20'
+                                />
+                                <Text>No Message Found!!!</Text>
+                            </Flex>
+                        ) : (
+                            <>
+                            {searchedMsg?.map(msg => {
+                                    return (
+                                        <Flex key={msg?.id} flexDirection='column' py='2' px='4' mb='4' backgroundColor='#f8f8f8' borderRadius='lg' boxShadow='md' cursor='pointer' onClick={() => setSelectedMessege(msg?.id)}>
+                                            <Text fontWeight='medium'>{user?.uid === msg?.sender?.id ? 'Me' : msg?.sender?.name}</Text>
+                                            <Text>{msg?.content}</Text>
+                                            <Text fontSize='xs' alignSelf='flex-end'>{msg?.createdAt?.formatedMsgDate?.slice(4)} {msg?.createdAt?.formatedMsgHour}:{msg?.createdAt?.formatedMsgMins}</Text>
+                                        </Flex>
+                                    )
+                                })
+                            }
+                        </>
+                        )
+                    }
+                 </>
+
+                }
+
             </Container>
         </>}
 
 
-        {showRightBar === 'details' && <Container p='0' height='92%' backgroundColor='#f4f4f4' overflowY='scroll'>
+        {showRightBar === 'details' && 
+        <Container 
+            p='0' 
+            height='92%' 
+            backgroundColor='#f4f4f4' 
+            overflowY='scroll'
+            sx={{
+                '&:: -webkit-scrollbar' : {
+                    width: '4px',
+                    backgroundColor:'#f8f8f8'
+                },
+                '&::-webkit-scrollbar-thumb' : {
+                    backgroundColor:'#00C884'
+                }
+            }}
+        >
             <Flex flexDirection='column' alignItems='center' justifyContent='center' backgroundColor = 'white' p='4' mb='2'>
                 <Avatar name={room?.name} size='xl'/>
                 <Text fontSize='xl' fontWeight='normal'>{room?.name}</Text>

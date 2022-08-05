@@ -19,7 +19,23 @@ export const MessageContainer = ({ room }) => {
 });
 
   return (
-    <Box p='2' backgroundColor='gray.300' width='100%' height={editedMessage ? '74%' : '84%'} overflowY='scroll' ref={msgContainerRef}>
+    <Box 
+        p='2' 
+        backgroundColor='gray.300' 
+        width='100%' 
+        height={editedMessage ? '74%' : '84%'} 
+        overflowY='scroll' 
+        ref={msgContainerRef}
+        sx={{
+          '&:: -webkit-scrollbar' : {
+              width: '4px',
+              backgroundColor:'#f8f8f8'
+          },
+          '&::-webkit-scrollbar-thumb' : {
+              backgroundColor:'#00C884'
+          }
+      }}  
+    >
       {allMsg?.length > 0 
       ? (
             <>

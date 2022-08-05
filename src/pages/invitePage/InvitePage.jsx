@@ -32,6 +32,12 @@ const InvitePage = () => {
                         <Text fontSize='2xl' fontWeight='medium'>{invitedRoom?.name}</Text>
                         <Text>Topic-Talk Room Invite</Text>
                         <Button onClick={handleJoinAction} mt='4' colorScheme='green' fontWeight='medium' size='lg'> Join Room </Button>
+                        <Image
+                            src='../../../assets/homepageimg.png'
+                            boxSize='200px'
+                            objectFit='cover'
+                            mt='2'
+                        />
                     </>
                 ): (
                     <>

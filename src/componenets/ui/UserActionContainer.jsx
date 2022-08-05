@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Flex, IconButton, Button, Textarea, Text, Spacer } from '@chakra-ui/react'
 import { BsEmojiSmile, BsPencil } from 'react-icons/bs'
 import { AiOutlineCheckCircle, AiOutlineSend } from 'react-icons/ai'
+import Picker from 'emoji-picker-react'
 import { useAuth, useRoom } from '../../contexts'
 import { v4 as uuid} from 'uuid'
 import { useMsg } from '../../hooks'
@@ -15,6 +16,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
     const { createMessage, updateMsg} = useMsg(room?.id)
     const [isMember,setIsMember] = useState(false)
     const [msgInput, setMsgInput] = useState({id:'', msg:''})
+    const [showEmojiPicker,setShowEmojiPicker] = useState(false)
 
 
     const isOwner = room?.owner?.id === user?.uid
@@ -39,6 +41,15 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
         setShowRightBar('')
     }
 
+    // Handle Emoji Selection
+    const onEmojiClick = (event, emojiObject) => {
+        if(editedMessage) {
+            setEditedMessage(prevState => ({...prevState, msg:prevState.msg+emojiObject.emoji}))
+        
+        }else{
+            setMsgInput(prevState => ({...prevState, msg:prevState.msg+emojiObject.emoji}))
+        }
+    }
 
     
     // Function to create new message in database
@@ -74,7 +85,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
         }else{
             handleMessageSubmit()
         }
-
+        setShowEmojiPicker(false)
     }
 
     // Prevent new line creation by enter key
@@ -86,6 +97,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
             }else{
                 handleMessageSubmit()
             }
+            setShowEmojiPicker(false)
         }
     }
 
@@ -111,8 +123,11 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
                         <GrClose cursor='pointer' onClick={() => setEditedMessage(null)}/>
                     </Flex>}
                     <form onSubmit={submitHandler}>
-                        <Flex h='fit-content' gap='2'>
-                            <IconButton type='button' icon={<BsEmojiSmile/>}/>
+                        <Flex h='fit-content' gap='2' position='relative'>
+                            <IconButton type='button' icon={<BsEmojiSmile/>} onClick={() => setShowEmojiPicker(prevState => !prevState)}/>
+                            {showEmojiPicker && <Box position='absolute' top={editedMessage ? '-24rem' : '-20.5rem'}>
+                                <Picker onEmojiClick={onEmojiClick}/>
+                            </Box>}
                             {editedMessage?.msg 
                             ? (
                                 <Textarea 

@@ -58,7 +58,7 @@ const MessageItem = ({msg, isUserMsg, selectedMessege, senderDetails, user, room
 
 
   return (
-    <Box id={msg?.id} ref={msgRef} p='2' maxW='40%' mb='1' ml={isUserMsg ? 'auto' : '0'} mr={isUserMsg ? '0' : 'auto'}>
+    <Box id={msg?.id} ref={msgRef} p='2' maxW='50%' mb='1' ml={isUserMsg ? 'auto' : '0'} mr={isUserMsg ? '0' : 'auto'}>
 
         {/* <Box backgroundColor='white' p='2' borderRadius='lg' z-index='10'>
           <Text fontSize='xs'>Star Message</Text>
