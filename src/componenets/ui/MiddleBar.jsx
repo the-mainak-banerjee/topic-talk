@@ -5,7 +5,7 @@ import { MiddleBarHeader } from './MiddleBarHeader'
 import { MessageContainer } from './messages/MessageContainer'
 import { UserActionContainer } from './UserActionContainer'
 
-export const MiddleBar = ({ showRightBar, setShowRightBar, room }) => {
+export const MiddleBar = ({ showRightBar, room, changeRightBar }) => {
 
   return (
     <Box width={showRightBar ? '40%' : '70%'} height='full' backgroundColor='#f8f8f8' position='relative'>
@@ -16,14 +16,14 @@ export const MiddleBar = ({ showRightBar, setShowRightBar, room }) => {
             <>
                 <MiddleBarHeader 
                     room = {room}
-                    setShowRightBar = {setShowRightBar}
+                    changeRightBar = {changeRightBar}
                 />
                 <MessageContainer
                     room = {room}
                 />
                 <UserActionContainer
                     room = {room}
-                    setShowRightBar = {setShowRightBar}
+                    changeRightBar = {changeRightBar}
                 />
             </>
         )

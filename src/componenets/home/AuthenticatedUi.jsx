@@ -1,5 +1,5 @@
 import { Box, HStack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { LeftBar } from '../ui/LeftBar'
 import { NavBar } from '../ui/NavBar'
 import { MiddleBar } from '../ui/MiddleBar'
@@ -11,7 +11,7 @@ export const AuthenticatedUi = () => {
 
   const { showRightBar, setShowRightBar } = useAuth()
   const [room,setRoom] = useState([])
-  const { allRooms, setSelectedMessege } = useRoom()
+  const { allRooms, changeSelectedMessage } = useRoom()
   const location = useLocation()
 
 
@@ -21,20 +21,23 @@ export const AuthenticatedUi = () => {
 
   useEffect(() => {
     if(showRightBar === ''){
-      setSelectedMessege(null)
+      changeSelectedMessage(null)
     }
     // eslint-disable-next-line
   }, [showRightBar])
 
+  const changeRightBar = useCallback((value) => {
+    setShowRightBar(value)
+  },[setShowRightBar])
 
   return (
     <>
         <NavBar/>
         <Box as='section' width='80vw' height='85vh' mx='auto' my='-4' backgroundColor='#F8F8F8' boxShadow='md'>
             <HStack height='full'>
-                <LeftBar setShowRightBar={setShowRightBar}/>
-                <MiddleBar room={room} showRightBar={showRightBar} setShowRightBar={setShowRightBar}/>
-                {showRightBar !== '' && <RightBar showRightBar={showRightBar} setShowRightBar={setShowRightBar} room={room}/>}
+                <LeftBar changeRightBar={changeRightBar} setShowRightBar={setShowRightBar}/>
+                <MiddleBar room={room} showRightBar={showRightBar} changeRightBar={changeRightBar}/>
+                {showRightBar !== '' && <RightBar showRightBar={showRightBar} changeRightBar={changeRightBar} room={room}/>}
             </HStack>
         </Box>
     </>

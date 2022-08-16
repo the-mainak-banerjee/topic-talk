@@ -21,7 +21,13 @@ const RoomContextProvider = ({ children }) => {
     const toast = useToast()
     const { user } = useAuth()
  
-    // console.log(allRooms)
+  
+
+    // Selected Message Handler
+    const changeSelectedMessage = (data) => {
+        setSelectedMessege(data)
+    }
+
 
     // Create a new room
 
@@ -133,7 +139,7 @@ const RoomContextProvider = ({ children }) => {
 
     return(
         <RoomContext.Provider 
-         value = {{createRooms,updateRoom, deleteRoom, allRooms, userRooms, suggestedRooms, loading, updating, selectedMessege,setSelectedMessege,editedMessage,setEditedMessage}}
+         value = {{createRooms,updateRoom, deleteRoom, allRooms, userRooms, suggestedRooms, loading, updating, selectedMessege,changeSelectedMessage,editedMessage,setEditedMessage}}
         >
             { children }
         </RoomContext.Provider>

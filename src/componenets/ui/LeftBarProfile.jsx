@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth, useRoom } from '../../contexts'
 import { useUser } from '../../hooks'
 
-export const LeftBarProfile = ({ setShowProfile }) => {
+export const LeftBarProfile = ({ changeProfileVisibility }) => {
 
     const { user } = useAuth()
     const { userData, updateUser } = useUser(user?.uid) 
     const [showForm, setShowForm] = useState(false)
     const [formData,setFormData] = useState('')
     const navigate = useNavigate()
-    const { setSelectedMessege } = useRoom()
+    const { changeSelectedMessage } = useRoom()
 
 
     // Name change handler
@@ -31,14 +31,14 @@ export const LeftBarProfile = ({ setShowProfile }) => {
 
     const showStarredMessage = (msg) => {
         navigate('/', {state: msg.room})
-        setSelectedMessege(msg.id)
+        changeSelectedMessage(msg.id)
     }
 
   return (
     <Box position='absolute' top='0' width='full' height='full' backgroundColor='white'>
         <Container px='2' pt='10' backgroundColor='#00C884' height='12%' color='white'>
             <Flex gap='4' alignItems='center'>
-                <AiOutlineArrowLeft cursor='pointer' onClick={() => setShowProfile(false)}/>
+                <AiOutlineArrowLeft cursor='pointer' onClick={() => changeProfileVisibility(false)}/>
                 <Text fontSize='lg' fontWeight='medium'>Profile</Text>
             </Flex>
         </Container>

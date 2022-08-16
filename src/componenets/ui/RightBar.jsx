@@ -8,7 +8,7 @@ import { useAuth, useRoom } from '../../contexts'
 import { useMsg } from '../../hooks'
 import inviteHandler from '../../utils/InviteHandler'
 
-export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
+export const RightBar = ({ showRightBar, changeRightBar, room }) => {
 
     const [searchText, setSearchText] = useState('')
     const [searchedMsg, setSearchedMsg] = useState([])
@@ -18,7 +18,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
     const inputRef = useRef()
     const { allMsg } = useMsg(room?.id)
     const { user } = useAuth()
-    const { updateRoom, setSelectedMessege, deleteRoom } = useRoom()
+    const { updateRoom, changeSelectedMessage, deleteRoom } = useRoom()
     const toast = useToast()
 
     const isAdmin = room?.admins?.some(item => item.id === user?.uid)
@@ -86,7 +86,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
         }
 
         updateRoom(room.id, data, 'You Have Left The Room')
-        setShowRightBar('')
+        changeRightBar('')
     }
 
     // Activate Admin Mode
@@ -97,21 +97,21 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
 
         const msg = room.isAdminOnly ? 'Disabled Admin Mode' : 'Enabled Admin Mode'
         updateRoom(room.id, data, msg)
-        setShowRightBar('')
+        changeRightBar('')
     }
 
     // Delete Room 
 
     const handleDeleteRoom = () => {
         deleteRoom(room?.id)
-        setShowRightBar('')
+        changeRightBar('')
     }
 
 
   return (
     <Box width={showRightBar ? '30%' : '0'} height='full' backgroundColor='#f8f8f8'>
         <Flex p='2' backgroundColor='#f8f8f8' width='100%' height='8%' alignItems='center' gap='4'>
-            <GrClose cursor='pointer' onClick={() =>  setShowRightBar('')}/>
+            <GrClose cursor='pointer' onClick={() =>  changeRightBar('')}/>
             {showRightBar === 'search' && <Text fontSize='sm' fontWeight='normal'>Search Messages</Text>}
             {showRightBar === 'details' && <Text fontSize='sm' fontWeight='normal'>Room Info</Text>}
         </Flex>
@@ -173,7 +173,7 @@ export const RightBar = ({ showRightBar, setShowRightBar, room }) => {
                             <>
                             {searchedMsg?.map(msg => {
                                     return (
-                                        <Flex key={msg?.id} flexDirection='column' py='2' px='4' mb='4' backgroundColor='#f8f8f8' borderRadius='lg' boxShadow='md' cursor='pointer' onClick={() => setSelectedMessege(msg?.id)}>
+                                        <Flex key={msg?.id} flexDirection='column' py='2' px='4' mb='4' backgroundColor='#f8f8f8' borderRadius='lg' boxShadow='md' cursor='pointer' onClick={() => changeSelectedMessage(msg?.id)}>
                                             <Text fontWeight='medium'>{user?.uid === msg?.sender?.id ? 'Me' : msg?.sender?.name}</Text>
                                             <Text>{msg?.content}</Text>
                                             <Text fontSize='xs' alignSelf='flex-end'>{msg?.createdAt?.formatedMsgDate?.slice(4)} {msg?.createdAt?.formatedMsgHour}:{msg?.createdAt?.formatedMsgMins}</Text>
