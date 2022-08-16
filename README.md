@@ -1,6 +1,6 @@
 # Topic-Talk
 
-A Room Chat App Web App.
+A Room Chat Web App.
 
 >[Click Here](https://topic-talk.netlify.app/) To See The Live App
 
