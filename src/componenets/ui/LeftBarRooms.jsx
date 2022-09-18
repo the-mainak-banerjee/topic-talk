@@ -6,12 +6,12 @@ import { useAuth, useRoom } from '../../contexts'
 import { serverTimestamp } from 'firebase/firestore'
 
 
-export const LeftBarRooms = ({ setShowRightBar, setShowProfile }) => {
+export const LeftBarRooms = ({ changeRightBar, changeProfileVisibility, setShowLeftBar, setShowMiddleBar }) => {
 
     const [showForm,setShowForm] = useState(false)
     const [roomName,setRoomName] = useState('')
     const { user } = useAuth() 
-    const { createRooms, userRooms, suggestedRooms, loading, setSelectedMessege } = useRoom()
+    const { createRooms, userRooms, suggestedRooms, loading, changeSelectedMessage } = useRoom()
     const toast = useToast()
     const navigate = useNavigate()
     const location = useLocation()
@@ -44,8 +44,10 @@ export const LeftBarRooms = ({ setShowRightBar, setShowProfile }) => {
     // handle View Room
     const viewRoom = (room) => {
         navigate('/', {state: room, replace: true})
-        setShowRightBar('')
-        setSelectedMessege(null)
+        changeRightBar('')
+        setShowMiddleBar(true)
+        setShowLeftBar(false)
+        changeSelectedMessage(null)
     }
 
 
@@ -59,7 +61,7 @@ export const LeftBarRooms = ({ setShowRightBar, setShowProfile }) => {
         <>
             <Container p='2' backgroundColor='#F8F8F8' height='8%'>
                 <Flex alignItems='center'>
-                    <Text cursor='pointer' color='#00A884' _hover={{textDecoration: 'underline'}} onClick={() => setShowProfile(true)}>{user?.displayName}</Text>
+                    <Text cursor='pointer' color='#00A884' _hover={{textDecoration: 'underline'}} onClick={() => changeProfileVisibility(true)}>{user?.displayName}</Text>
                     <Spacer/>
                     <IconButton icon={showForm ? <AiFillCloseCircle/> : <AiFillPlusCircle/>} size='sm' colorScheme={showForm ? 'red' : 'green'} variant='outline' onClick={() => setShowForm(prevState => !prevState)}/>
                 </Flex>

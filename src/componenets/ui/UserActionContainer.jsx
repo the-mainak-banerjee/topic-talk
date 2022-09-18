@@ -9,7 +9,7 @@ import { useMsg } from '../../hooks'
 import { serverTimestamp } from 'firebase/firestore'
 import { GrClose } from 'react-icons/gr'
 
-export const UserActionContainer = ({ room, setShowRightBar }) => {
+export const UserActionContainer = ({ room, changeRightBar }) => {
 
     const { user } = useAuth()
     const { updateRoom, updating, editedMessage, setEditedMessage } = useRoom()
@@ -38,7 +38,7 @@ export const UserActionContainer = ({ room, setShowRightBar }) => {
         }
         updateRoom(room.id, roomData,'You Have Successfully Joined the Room')
         setIsMember(true)
-        setShowRightBar('')
+        changeRightBar('')
     }
 
     // Handle Emoji Selection
