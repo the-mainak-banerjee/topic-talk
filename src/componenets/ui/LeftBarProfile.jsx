@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth, useRoom } from '../../contexts'
 import { useUser } from '../../hooks'
 
-export const LeftBarProfile = ({ changeProfileVisibility }) => {
+export const LeftBarProfile = ({ changeProfileVisibility, setShowMiddleBar, setShowLeftBar }) => {
 
     const { user } = useAuth()
     const { userData, updateUser } = useUser(user?.uid) 
@@ -32,6 +32,8 @@ export const LeftBarProfile = ({ changeProfileVisibility }) => {
     const showStarredMessage = (msg) => {
         navigate('/', {state: msg.room})
         changeSelectedMessage(msg.id)
+        setShowMiddleBar(true)
+        setShowLeftBar(false)
     }
 
   return (

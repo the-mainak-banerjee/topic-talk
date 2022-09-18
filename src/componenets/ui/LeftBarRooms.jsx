@@ -6,12 +6,12 @@ import { useAuth, useRoom } from '../../contexts'
 import { serverTimestamp } from 'firebase/firestore'
 
 
-export const LeftBarRooms = ({ changeRightBar, changeProfileVisibility }) => {
+export const LeftBarRooms = ({ changeRightBar, changeProfileVisibility, setShowLeftBar, setShowMiddleBar }) => {
 
     const [showForm,setShowForm] = useState(false)
     const [roomName,setRoomName] = useState('')
     const { user } = useAuth() 
-    const { createRooms, userRooms, suggestedRooms, loading, setSelectedMessege } = useRoom()
+    const { createRooms, userRooms, suggestedRooms, loading, changeSelectedMessage } = useRoom()
     const toast = useToast()
     const navigate = useNavigate()
     const location = useLocation()
@@ -45,7 +45,9 @@ export const LeftBarRooms = ({ changeRightBar, changeProfileVisibility }) => {
     const viewRoom = (room) => {
         navigate('/', {state: room, replace: true})
         changeRightBar('')
-        setSelectedMessege(null)
+        setShowMiddleBar(true)
+        setShowLeftBar(false)
+        changeSelectedMessage(null)
     }
 
 

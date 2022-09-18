@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 
 export const AuthenticatedUi = () => {
 
-  const { showRightBar, setShowRightBar } = useAuth()
+  const { showRightBar, setShowRightBar, showMiddleBar,setShowMiddleBar, showLeftBar, setShowLeftBar, setShowRightBarInMobile, showRightBarInMobile } = useAuth()
   const [room,setRoom] = useState([])
   const { allRooms, changeSelectedMessage } = useRoom()
   const location = useLocation()
@@ -33,11 +33,11 @@ export const AuthenticatedUi = () => {
   return (
     <>
         <NavBar/>
-        <Box as='section' width='80vw' height='85vh' mx='auto' my='-4' backgroundColor='#F8F8F8' boxShadow='md'>
+        <Box as='section' width={{base:'100vw',md:'80vw'}} height={{base:'92vh', md:'85vh'}} mx='auto' my={{base:'0',md:'-4'}} backgroundColor='#F8F8F8' boxShadow='md'>
             <HStack height='full'>
-                <LeftBar changeRightBar={changeRightBar} setShowRightBar={setShowRightBar}/>
-                <MiddleBar room={room} showRightBar={showRightBar} changeRightBar={changeRightBar}/>
-                {showRightBar !== '' && <RightBar showRightBar={showRightBar} changeRightBar={changeRightBar} room={room}/>}
+                <LeftBar changeRightBar={changeRightBar} setShowRightBar={setShowRightBar} showLeftBar={showLeftBar} setShowLeftBar={setShowLeftBar} setShowMiddleBar={setShowMiddleBar}/>
+                <MiddleBar room={room} showRightBar={showRightBar} changeRightBar={changeRightBar} showMiddleBar={showMiddleBar} setShowMiddleBar={setShowMiddleBar} setShowLeftBar={setShowLeftBar} setShowRightBarInMobile={setShowRightBarInMobile}/>
+                {showRightBar !== '' && <RightBar showRightBar={showRightBar} changeRightBar={changeRightBar} room={room} setShowMiddleBar={setShowMiddleBar} setShowLeftBar={setShowLeftBar} setShowRightBarInMobile={setShowRightBarInMobile} showRightBarInMobile={showRightBarInMobile}/>}
             </HStack>
         </Box>
     </>

@@ -25,6 +25,9 @@ const AuthContextProider = ( { children }) => {
     // const [userData, setUserData] = useState()
     const [userTocken,setUserTocken] = useState(localTocken)
     const [showRightBar,setShowRightBar] = useState('')
+    const [showLeftBar,setShowLeftBar] = useState(true)
+    const [showMiddleBar,setShowMiddleBar] = useState(false)
+    const [showRightBarInMobile,setShowRightBarInMobile] = useState(false)
     const { createUser } = useUser()
     const navigate = useNavigate()
     const toast = useToast()
@@ -137,7 +140,7 @@ const AuthContextProider = ( { children }) => {
 
     return (
         <AuthContext.Provider
-            value = {{ loading, signUp, logIn, logOut, user, userTocken, showRightBar,setShowRightBar }}
+            value = {{ loading, signUp, logIn, logOut, user, userTocken, showRightBar,setShowRightBar, showLeftBar,setShowLeftBar, showMiddleBar,setShowMiddleBar, showRightBarInMobile,setShowRightBarInMobile }}
         >
             {children}
         </AuthContext.Provider>
