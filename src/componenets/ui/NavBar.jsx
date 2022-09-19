@@ -18,12 +18,12 @@ export const NavBar = () => {
     }
 
   return (
-    <Box as='nav' backgroundColor='#00A884' pt='4' pb={{base:'4' ,md:'8'}} color='white'>
-        <Flex width='80%' mx='auto' align='center'>
+    <Box as='nav' backgroundColor='#00A884' pt='4' pb={{base:'4' ,md:'8'}} px={{base:'2', md:'0'}} color='white'>
+        <Flex width={{base:'100%',md:'80%'}} mx='auto' align='center'>
             <Heading as='h2' size={{base:'sm',md:'xl'}}>Topic-Talk</Heading>
             <Spacer/>
-            <Button onClick={inviteFriends} size='sm' variant='outline' fontWeight='medium' mr='4' color='black'>Invite Friends</Button>
-            {userTocken && <Button onClick={logOutHandler} size='sm' backgroundColor='white' color='black' fontWeight='medium'>Logout</Button>}
+            <Button onClick={inviteFriends} size={{base:'sm', md:'md'}} variant='outline' fontWeight='medium' mr='4' color='black'>Invite Friends</Button>
+            {userTocken && <Button onClick={logOutHandler} size={{base:'sm', md:'md'}} backgroundColor='white' color='black' fontWeight='medium'>Logout</Button>}
         </Flex>
     </Box>
   )

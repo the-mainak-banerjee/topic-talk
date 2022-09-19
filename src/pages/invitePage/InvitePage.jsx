@@ -10,7 +10,7 @@ const InvitePage = () => {
     const params = useParams()
     const navigate = useNavigate()
     const { allRooms } = useRoom()
-    const { user } = useAuth()
+    const { user, setShowMiddleBar, setShowLeftBar } = useAuth()
     const [isMember,setIsMember] = useState(false)
 
 
@@ -25,12 +25,14 @@ const InvitePage = () => {
 
     const handleJoinAction = () => {
         navigate('/', {state: invitedRoom, replace: true})
+        setShowLeftBar(false)
+        setShowMiddleBar(true)
     }
 
   return (
     <>
         <NavBar/>
-        <Flex width='80vw' height='85vh' mx='auto' my='-4' backgroundColor='#F8F8F8' boxShadow='md' flexDirection='column' gap='2' alignItems='center' pt='20'>
+        <Flex width={{base:'100vw',md:'80vw'}} height={{base:'92vh', md:'85vh'}} mx='auto' my={{base:'0',md:'-4'}} backgroundColor='#F8F8F8' boxShadow='md' flexDirection='column' gap='2' alignItems='center' pt='20'>
 
 
             {invitedRoom 
