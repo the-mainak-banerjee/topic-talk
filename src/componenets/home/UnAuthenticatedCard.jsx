@@ -36,7 +36,7 @@ export const UnAuthenticatedCard = () => {
           objectFit='cover'
         />
         <Heading>Topic-Talk</Heading>
-        <Text fontSize='lg' textAlign='center' px='4' mb='4' w='30%'>Connect And Start Chatting with People With Different Interests</Text>
+        <Text fontSize='lg' textAlign='center' px='4' mb='4' w={{base:'90%',md:'30%'}}>Connect And Start Chatting with People With Different Interests</Text>
   
           {showLogin
             ?(

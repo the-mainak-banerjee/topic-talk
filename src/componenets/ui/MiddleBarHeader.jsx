@@ -28,7 +28,7 @@ export const MiddleBarHeader = ({ room, changeRightBar, setShowMiddleBar, setSho
   return (
     <Box p='2' backgroundColor='#f8f8f8' width='100%' height='8%'>
          <Flex alignItems='center' mb='2'>
-            <Show breakpoint='(max-width: 400px)'>
+            <Show breakpoint='(max-width: 767px)'>
               <AiOutlineArrowLeft onClick={handleCloseMiddleBar}/>
             </Show>
             <Flex gap='2' cursor='pointer' onClick={handleShowRightBarDetails}>
